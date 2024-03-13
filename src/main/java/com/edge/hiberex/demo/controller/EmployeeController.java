@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,9 +39,10 @@ public class EmployeeController {
     }
 
     @PostMapping("/search-with-pagination")
-    public ApiResponse<Page<Employee>> searchWithPagination(@Valid @RequestBody SearchRequest<EmployeeSearchCriteria> searchRequest) {
+    public ResponseEntity<ApiResponse<Page<Employee>>> searchWithPagination(
+        @Valid @RequestBody SearchRequest<EmployeeSearchCriteria> searchRequest) {
         Page<Employee> employees = employeeService.search(searchRequest.getSearchCriteria(), searchRequest.getPagination());
-        return ApiResponse.success(employees);
+        return ResponseEntity.ok(ApiResponse.success(employees));
     }
 
 }
