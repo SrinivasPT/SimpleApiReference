@@ -1,14 +1,15 @@
 package com.edge.hiberex.demo.controller;
 
+import com.edge.hiberex.demo.common.ApiResponse;
 import com.edge.hiberex.demo.common.SearchRequest;
 import com.edge.hiberex.demo.dto.EmployeeSearchCriteria;
 import com.edge.hiberex.demo.entity.Employee;
 import com.edge.hiberex.demo.service.EmployeeService;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,22 +25,22 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
+    public ApiResponse<Employee> getEmployeeById(@PathVariable int id) {
         Optional<Employee> employee = employeeService.getById(id);
-        return employee.map(ResponseEntity::ok)
-            .orElseGet(() -> ResponseEntity.notFound().build());
+        return employee.map(e -> ApiResponse.success(e))
+            .orElseGet(() -> ApiResponse.error(null, "Employee not found"));
     }
 
     @PostMapping("/search")
-    public ResponseEntity<List<Employee>> search(@RequestBody EmployeeSearchCriteria criteria) {
+    public ApiResponse<List<Employee>> search(@Valid @RequestBody EmployeeSearchCriteria criteria) {
         List<Employee> employees = employeeService.search(criteria);
-        return ResponseEntity.ok(employees);
+        return ApiResponse.success(employees);
     }
 
     @PostMapping("/search-with-pagination")
-    public ResponseEntity<Page<Employee>> searchWithPagination(@RequestBody SearchRequest<EmployeeSearchCriteria> searchRequest) {
+    public ApiResponse<Page<Employee>> searchWithPagination(@Valid @RequestBody SearchRequest<EmployeeSearchCriteria> searchRequest) {
         Page<Employee> employees = employeeService.search(searchRequest.getSearchCriteria(), searchRequest.getPagination());
-        return ResponseEntity.ok(employees);
+        return ApiResponse.success(employees);
     }
 
 }
