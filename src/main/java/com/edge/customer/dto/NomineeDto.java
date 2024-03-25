@@ -27,10 +27,9 @@ public class NomineeDto {
     @Size(max = 50, message = "Last Name must not exceed 50 characters.")
     private String lastName;
 
-    @NotBlank(message = "Nominee Type is required.")
+    @NotNull(message = "Nominee type is required.")
     private NomineeType nomineeType;
 
-    @NotNull
     @PastOrPresent
     private LocalDate dateOfBirth;
 }

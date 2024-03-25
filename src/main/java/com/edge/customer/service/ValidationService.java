@@ -2,6 +2,7 @@ package com.edge.customer.service;
 
 import com.edge.customer.dto.CustomerDto;
 import com.edge.customer.dto.NomineeDto;
+import com.edge.customer.enums.NomineeType;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -9,24 +10,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class ValidationService {
 
-    public List<String> validate(Object dto) {
-        if (dto instanceof CustomerDto) {
-            return validateCustomerDto((CustomerDto) dto);
-        } else if (dto instanceof NomineeDto) {
-            return validateNomineeDto((NomineeDto) dto);
-        }
-        return new ArrayList<>();
+    public List<String> validate(CustomerDto customerDto) {
+        List<String> errors = new ArrayList<>(validateCustomerDto(customerDto));
+        customerDto.getNominees().forEach(nominee -> errors.addAll(validateNomineeDto(nominee)));
+        return errors;
     }
 
     private List<String> validateCustomerDto(CustomerDto customerDto) {
-        List<String> errors = new ArrayList<>();
         // Add customer-specific validations
-        return errors;
+        return new ArrayList<>();
     }
 
     private List<String> validateNomineeDto(NomineeDto nomineeDto) {
         List<String> errors = new ArrayList<>();
-        // Add nominee-specific validations
+        if (nomineeDto.getNomineeType() == NomineeType.MINOR && nomineeDto.getDateOfBirth() == null) {
+            errors.add("For minor, data of birth is required.");
+        }
         return errors;
     }
 }

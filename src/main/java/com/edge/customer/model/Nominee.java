@@ -37,10 +37,9 @@ public class Nominee extends Auditable {
     @NotBlank
     private String lastName;
 
-    @NotBlank
+    @NotNull(message = "Nominee type is required.")
     private NomineeType nomineeType;
 
-    @NotNull
     @PastOrPresent
     private LocalDate dateOfBirth;
 
