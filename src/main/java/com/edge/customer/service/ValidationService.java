@@ -5,6 +5,7 @@ import com.edge.customer.dto.NomineeDto;
 import com.edge.customer.enums.NomineeType;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,7 +24,7 @@ public class ValidationService {
 
     private List<String> validateNomineeDto(NomineeDto nomineeDto) {
         List<String> errors = new ArrayList<>();
-        if (nomineeDto.getNomineeType() == NomineeType.MINOR && nomineeDto.getDateOfBirth() == null) {
+        if (Objects.equals(nomineeDto.getNomineeType(), NomineeType.MINOR.toString()) && nomineeDto.getDateOfBirth() == null) {
             errors.add("For minor, data of birth is required.");
         }
         return errors;

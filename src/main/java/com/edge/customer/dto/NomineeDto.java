@@ -1,12 +1,12 @@
 package com.edge.customer.dto;
 
 import com.edge.customer.enums.NomineeType;
+import com.edge.customer.validator.ValidEnumValue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Date;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,7 +28,8 @@ public class NomineeDto {
     private String lastName;
 
     @NotNull(message = "Nominee type is required.")
-    private NomineeType nomineeType;
+    @ValidEnumValue(enumClass = NomineeType.class, message = "Invalid Nominee Type")
+    private String nomineeType;
 
     @PastOrPresent
     private LocalDate dateOfBirth;

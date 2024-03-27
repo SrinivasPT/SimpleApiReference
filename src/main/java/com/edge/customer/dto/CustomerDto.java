@@ -1,12 +1,13 @@
 package com.edge.customer.dto;
 
+import com.edge.customer.enums.SystemCode;
+import com.edge.customer.validator.ValidEnumValue;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,6 +44,7 @@ public class CustomerDto {
     private String accountNumber;
 
     @NotBlank(message = "System Code is required.")
+    @ValidEnumValue(enumClass = SystemCode.class, message = "Invalid System Code.")
     private String systemCode;
 
     @Valid
